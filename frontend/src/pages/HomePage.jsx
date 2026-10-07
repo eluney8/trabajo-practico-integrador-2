@@ -1,3 +1,4 @@
+import { Navbar } from "../components/Navbar";
 import { useFetch } from "../hooks/useFetch";
 
 export const HomePage = () => {
