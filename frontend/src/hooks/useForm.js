@@ -1,4 +1,3 @@
-Set-Content -Path; "src/hooks/useForm.js" -Value
 import { useState } from "react";
 
 export const useForm = (initialForm = {}) => {
