@@ -1,14 +1,39 @@
-import { Link } from "react-router";
 import { useForm } from "../hooks/useForm";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
 
 export const LoginPage = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
   const { formState, handleInputChange } = useForm({
     username: "",
     password: "",
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("datos de login:", formState);
+    setLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formState),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Credenciales incorrectas");
+      }
+      localStorage.setItem("isLogged", "true");
+      navigate("/home");
+    } catch (err) {
+      setErrorMessage(err.message || "Error al conectar con el servidor");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -16,6 +41,11 @@ export const LoginPage = () => {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           iniciar sesion
         </h2>
+        {errorMessage && (
+          <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
+            {errorMessage}
+          </p>
+        )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -43,11 +73,12 @@ export const LoginPage = () => {
               placeholder="••••••••"
             />
           </div>
-          <button
+         <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition"
+            disabled={loading}
+            className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition disabled:bg-indigo-300"
           >
-            ingresar
+            {loading ? "ingresando..." : "Ingresar"}
           </button>
         </form>
         <p className="text-sm text-center text-gray-600 mt-4">

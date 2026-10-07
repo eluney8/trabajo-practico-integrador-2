@@ -14,7 +14,7 @@ export const sequelize = new Sequelize(
 export const bdLista = async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({ force:false });
+        await sequelize.sync({ alter: true });;
         console.log("conexion a la bd correcta");
     } catch (error) {
     console.log("error al conectarse a la bd", error);
