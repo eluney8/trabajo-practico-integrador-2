@@ -34,7 +34,7 @@ if (!response.ok) {
               ? err
               : err.msg || err.message
           )
-          .join(" | ");
+          .join(" \n ");
         throw new Error(mensajes);
       }
       throw new Error(data.message || "Error al registrar el usuario");
@@ -54,7 +54,7 @@ if (!response.ok) {
           crear cuenta
         </h2>
         {errorMessage && (
-          <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center">
+          <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center whitespace-pre-line">
             {errorMessage}
           </p>
         )}
