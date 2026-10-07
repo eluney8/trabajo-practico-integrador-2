@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { PublicRoutes } from "./PublicRoutes";
 import { PrivateRoutes } from "./PrivateRoutes";
-import { Navbar } from "../components/Navbar";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
@@ -11,7 +10,6 @@ const isLogged = localStorage.getItem("isLogged") === "true";
   return (
     <BrowserRouter>
       {}
-      {isLogged && <Navbar />}
       <Routes>
         <Route element={<PublicRoutes />}>
           <Route path="/login" element={<LoginPage />} />
